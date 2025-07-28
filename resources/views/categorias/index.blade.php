@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categorías de Autos</title>
     <!-- Incluye Bootstrap CSS -->
@@ -12,22 +13,33 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif; /* Asegura el uso de la fuente Inter */
+            font-family: 'Inter', sans-serif;
+            /* Asegura el uso de la fuente Inter */
         }
+
         .btn {
-            border-radius: 0.5rem; /* Bordes redondeados para botones */
+            border-radius: 0.5rem;
+            /* Bordes redondeados para botones */
         }
+
         .table {
-            border-radius: 0.5rem; /* Bordes redondeados para la tabla */
-            overflow: hidden; /* Para que los bordes redondeados se apliquen al contenido de la tabla */
+            border-radius: 0.5rem;
+            /* Bordes redondeados para la tabla */
+            overflow: hidden;
+            /* Para que los bordes redondeados se apliquen al contenido de la tabla */
         }
+
         .alert {
-            border-radius: 0.5rem; /* Bordes redondeados para alertas */
+            border-radius: 0.5rem;
+            /* Bordes redondeados para alertas */
         }
+
         .header-content {
             position: relative;
-            padding-top: 20px; /* Espacio para el botón Volver */
+            padding-top: 20px;
+            /* Espacio para el botón Volver */
         }
+
         .header-back-button {
             position: absolute;
             top: 1rem;
@@ -68,17 +80,17 @@
 
         {{-- Aquí irían las alertas de Laravel que vimos antes, si las estás usando --}}
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         @endif
 
         @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         @endif
 
         <div class="table-responsive">
@@ -92,145 +104,141 @@
                     </tr>
                 </thead>
                 <tbody id="categorias-table-body">
-                    {{-- El contenido se llenará con JavaScript --}}
+                    @if ($categorias->isEmpty())
                     <tr>
-                        <td colspan="4" class="text-center">Cargando categorías...</td>
+                        <td colspan="4" class="text-center">No hay categorías registradas.</td>
                     </tr>
+                    @else
+                    @foreach ($categorias as $categoria)
+                    <tr>
+                        <td>{{ $categoria->id }}</td>
+                        <td>{{ $categoria->nombre }}</td>
+                        <td>{{ $categoria->descripcion }}</td>
+                        <td>
+                            {{-- Botón para abrir el modal de eliminación --}}
+                            <button type="button" class="btn btn-danger btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#borrarCategoria"
+                                data-categoria-id="{{ $categoria->id }}" {{-- ¡IMPORTANTE: Aquí pasamos el ID! --}}
+                                data-categoria-nombre="{{ $categoria->nombre }}"> {{-- Opcional: pasar el nombre para mostrarlo --}}
+                                <i class="bi bi-trash-fill"></i> Eliminar
+                            </button>
+                            {{-- Otros botones como Editar --}}
+                            <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-fill"></i> Editar</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endif
                 </tbody>
             </table>
+
+            <div class="modal fade" id="borrarCategoria" tabindex="-1" aria-labelledby="borrarCategoriaLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered"> {{-- Añadido para centrar verticalmente --}}
+                    <div class="modal-content border-danger border-3"> {{-- Borde rojo para advertencia --}}
+                        <div class="modal-header bg-danger text-white"> {{-- Fondo rojo en el encabezado --}}
+                            <h5 class="modal-title" id="borralCategoriaLabel">
+                                <i class="bi bi-exclamation-triangle-fill"></i> Advertencia
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button> {{-- btn-close-white para ícono blanco --}}
+                        </div>
+                        <div class="modal-body text-center"> {{-- Centrar texto del cuerpo --}}
+                            <p class="lead mb-4">
+                                <i class="bi bi-x-circle-fill text-danger display-4"></i> {{-- Ícono grande de advertencia/error --}}
+                            </p>
+                            <p class="fs-5 fw-bold">¿Estás seguro de que quieres eliminar esta categoría?</p>
+                            <p class="text-muted">Esta acción no se puede deshacer.</p>
+                        </div>
+                        <div class="modal-footer justify-content-between"> {{-- Botones justificados al espacio --}}
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="bi bi-x-lg"></i> Cancelar
+                            </button>
+                            <button id="confirmarEliminarBtn" type="button" class="btn btn-danger">
+                                <i class="bi bi-trash-fill"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
-    <!-- Incluye Bootstrap JS (Bundle con Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 
-    <script>
-        function cargarCategorias() {
-            const tableBody = document.getElementById('categorias-table-body');
-            // Muestra el mensaje de carga mientras se obtienen los datos
-            if (tableBody) {
-                tableBody.innerHTML = '<tr><td colspan="4" class="text-center">Cargando categorías...</td></tr>';
-            }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modalBorrarCategoria = document.getElementById('borrarCategoria');
+        const modalCategoriaNombre = modalBorrarCategoria ? modalBorrarCategoria.querySelector('.modal-body .fw-bold') : null;
+        
+        const confirmarEliminarBtn = document.getElementById('confirmarEliminarBtn');
 
-            fetch('http://127.0.0.1:8000/api/categorias') // La URL de tu API
-                .then(response => {
-                    if (!response.ok) {
-                        const errorResponseClone = response.clone();
-                        return errorResponseClone.json()
-                            .then(errorData => {
-                                throw new Error(`HTTP Error: ${response.status} ${response.statusText}. Detalles del servidor: ${JSON.stringify(errorData)}`);
-                            })
-                            .catch(() => {
-                                throw new Error(`HTTP Error: ${response.status} ${response.statusText}. El servidor no devolvió un JSON de error.`);
-                            });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("✅ Datos de categorías cargados exitosamente:", data);
+        let categoriaIdAEliminar = null;
 
-                    // Limpiar el cuerpo de la tabla antes de añadir nuevos datos
-                    if (tableBody) {
-                        tableBody.innerHTML = '';
+        if (modalBorrarCategoria) {
+            modalBorrarCategoria.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget; 
+                categoriaIdAEliminar = button.getAttribute('data-categoria-id');
+                const categoriaNombre = button.getAttribute('data-categoria-nombre');
 
-                        // Si no hay datos, mostrar un mensaje
-                        if (data.length === 0) {
-                            tableBody.innerHTML = '<tr><td colspan="4" class="text-center">No hay categorías registradas.</td></tr>';
-                            return;
-                        }
-
-                        // Iterar sobre los datos y crear filas de tabla
-                        data.forEach(categoria => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${categoria.id}</td>
-                                <td>${categoria.nombre}</td>
-                                <td>${categoria.descripcion || 'N/A'}</td> {{-- Muestra 'N/A' si la descripción es nula --}}
-                                <td class="text-center">
-                                    <a href="/categorias/${categoria.id}/edit" class="btn btn-warning btn-sm me-2 d-inline-flex align-items-center" title="Editar Categoría">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </a>
-                                    {{-- El formulario de eliminación se manejará con JavaScript para evitar recargas --}}
-                                    <form class="d-inline delete-form" data-id="${categoria.id}">
-                                        @csrf {{-- Directiva de Blade para el token CSRF --}}
-                                        @method('DELETE') {{-- Directiva de Blade para simular el método DELETE --}}
-                                        <button type="submit" class="btn btn-danger btn-sm d-inline-flex align-items-center" title="Eliminar Categoría">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            `;
-                            tableBody.appendChild(row);
-                        });
-
-                        // Añadir event listeners a los formularios de eliminación después de que se han añadido al DOM
-                        document.querySelectorAll('.delete-form').forEach(form => {
-                            form.addEventListener('submit', function(event) {
-                                event.preventDefault(); // Prevenir el envío normal del formulario
-
-                                if (confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
-                                    const categoriaId = this.dataset.id;
-                                    const csrfToken = this.querySelector('input[name="_token"]').value;
-
-                                    fetch(`/api/categorias/${categoriaId}`, {
-                                        method: 'DELETE',
-                                        headers: {
-                                            'X-CSRF-TOKEN': csrfToken, // Envía el token CSRF
-                                            'Content-Type': 'application/json',
-                                            'Accept': 'application/json'
-                                        }
-                                    })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            // Si la API devuelve un error (ej. 404, 500)
-                                            return response.json().then(errorData => {
-                                                throw new Error(`Error al eliminar: ${errorData.message || response.statusText}`);
-                                            }).catch(() => {
-                                                throw new Error(`Error al eliminar: ${response.statusText}`);
-                                            });
-                                        }
-                                        // Si la eliminación fue exitosa (ej. 204 No Content)
-                                        return response.text().then(text => text ? JSON.parse(text) : {});
-                                    })
-                                    .then(() => {
-                                        console.log(`Categoría con ID ${categoriaId} eliminada.`);
-                                        // Recargar la lista de categorías para reflejar el cambio
-                                        cargarCategorias();
-                                    })
-                                    .catch(error => {
-                                        console.error('Error al eliminar la categoría:', error);
-                                        alert(`No se pudo eliminar la categoría: ${error.message}`); // Usar un modal de Bootstrap en un entorno real
-                                    });
-                                }
-                            });
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('❌ ERROR CRÍTICO al cargar las categorías:');
-                    console.error('   Mensaje:', error.message);
-                    console.error('   Tipo de error:', error.name);
-                    console.error('   Objeto de error completo:', error);
-
-                    if (tableBody) {
-                        tableBody.innerHTML = `
-                            <tr>
-                                <td colspan="4" class="text-center text-danger">
-                                    ¡Oops! No se pudieron cargar las categorías.
-                                    <br>
-                                    Por favor, revise la consola del navegador (F12) para más detalles técnicos.
-                                    <br>
-                                    ${error.message ? `(${error.message})` : ''}
-                                </td>
-                            </tr>
-                        `;
-                    }
-                });
+                if (modalCategoriaNombre) {
+                    modalCategoriaNombre.textContent = `¿Estás seguro de que quieres eliminar la categoría "${categoriaNombre}"?`;
+                }
+                console.log('Modal de eliminación abierto para ID:', categoriaIdAEliminar, 'Nombre:', categoriaNombre);
+            });
         }
 
-        document.addEventListener('DOMContentLoaded', cargarCategorias);
-    </script>
+        if (confirmarEliminarBtn) {
+            confirmarEliminarBtn.addEventListener('click', function() {
+                if (categoriaIdAEliminar) {
+                    console.log('Iniciando eliminación para categoría ID:', categoriaIdAEliminar);
+
+                    fetch(`/categorias/${categoriaIdAEliminar}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '',
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => Promise.reject(err));
+                        }
+                        return response.json(); 
+                    })
+                    .then(data => {
+                        console.log('Respuesta del servidor:', data);
+                        if (data.success) {
+                            alert('Categoría eliminada exitosamente.');
+                            window.location.reload(); 
+                        } else {
+                            alert('Error al eliminar: ' + (data.message || 'Mensaje desconocido.'));
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error en la petición de eliminación:', error);
+                        alert('Ocurrió un error inesperado al intentar eliminar la categoría.');
+                    })
+                    .finally(() => {
+                        let modalInstance = bootstrap.Modal.getInstance(modalBorrarCategoria);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    });
+
+                } else {
+                    console.warn('No se pudo determinar la ID de la categoría a eliminar.');
+                    alert('Error: No se seleccionó una categoría para eliminar.');
+                    let modalInstance = bootstrap.Modal.getInstance(modalBorrarCategoria);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
+                }
+            });
+        }
+    });
+</script>
 </body>
+
 </html>

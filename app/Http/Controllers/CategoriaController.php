@@ -12,8 +12,8 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-          $categorias = Categoria::all();
-        return response()->json($categorias);   
+        $categorias = Categoria::all();
+        return view('categorias/index', compact('categorias')); // Pasa las categorías a la vista
     }
 
     /**
@@ -61,6 +61,12 @@ class CategoriaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $categoria = Categoria::findOrFail($id);
+            $categoria->delete();
+            return response()->json(['success' => true, 'message' => 'Categoría eliminada exitosamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar la categoría: ' . $e->getMessage()], 500);
+        }
     }
 }

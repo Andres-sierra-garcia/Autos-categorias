@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,6 @@ Route::get('/editarAuto', function () {
 
 // categorias
 
-Route::get('/verCategorias', function () {
-    return view('categorias/index');
-});
+Route::get('/verCategorias',CategoriaController::class . '@index');
+
+Route::delete('/categorias/{id}',CategoriaController::class . '@destroy');
