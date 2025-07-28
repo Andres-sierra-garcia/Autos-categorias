@@ -24,48 +24,63 @@
     </header>
 
     <main class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Listado de Vehículos</h2>
-    <div>
-        <a href="/verCategorias" class="btn btn-success me-2">
-            <i class="bi bi-plus me-1"></i> Ver categorias
-        </a>
-        <a href="/crearAuto" class="btn btn-primary">
-            <i class="bi bi-car-front-fill me-1"></i> Categorizar Auto
-        </a>
-    </div>
-</div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Listado de Vehículos</h2>
+            <div>
+                <a href="/categorias" class="btn btn-success me-2">
+                    <i class="bi bi-plus me-1"></i> Ver categorias
+                </a>
+                <a href="/crearAuto" class="btn btn-primary">
+                    <i class="bi bi-car-front-fill me-1"></i> Categorizar Auto
+                </a>
+            </div>
+        </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
+                        <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Marca</th>
                         <th scope="col">Modelo</th>
                         <th scope="col">Categoría</th>
-                        <th scope="col" class="text-center">Opciones</th>
+                        <th scope="col" class="text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="autos-table-body">
+                    @if ($autos->isEmpty())
                     <tr>
-                        <td>Toyota Corolla</td>
-                        <td>Un sedán confiable y económico.</td>
-                        <td>Toyota</td>
-                        <td>Corolla</td>
-                        <td>Sedán</td>
-                        <td class="text-center">
-                            <a href="/editarAuto" class="btn btn-warning btn-sm me-2"><i class="bi bi-pencil-fill"></i></a>
-                            <button class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></button>
-                        </td>
+                        <td colspan="7" class="text-center">No hay autos registrados.</td>
                     </tr>
-                </tbody>
-            </table>
+                    @else
+                    @foreach ($autos as $auto)
+                    <tr>
+                        <td>{{ $auto->id }}</td>
+                        <td>{{ $auto->nombre }}</td>
+                        <td>{{ $auto->descripcion }}</td>
+                        <td>{{ $auto->marca }}</td>
+                        <td>{{ $auto->modelo }}</td>
+                        <td>{{ $auto->categoria_nombre ?? 'Sin categoría' }}</td>
+                        <td>
+                            <a href="{{ route('autos.show', $auto->id) }}"
+                                class="btn btn-primary btn-sm d-inline-flex align-items-center">
+                                <i class="bi bi-pencil-fill me-1"></i> Editar
+                            </a>
+                            <button type="button" class="btn btn-danger btn-sm d-inline-flex align-items-center"
+                                data-bs-toggle="modal" data-bs-target="#borrarCategoria"
+                                data-categoria-id="{{ $auto->id }}" data-categoria-nombre="{{ $auto->nombre }}">
+                                <i class="bi bi-trash-fill me-1"></i> Eliminar
+                            </button>
+                        </td>
+        </div>
+        </td>
+        </tr>
+        @endforeach
+        @endif
+        </tbody>
+        </table>
         </div>
     </main>
 </body>
-<script>
-
-</script>
-
 </html>

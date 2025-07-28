@@ -1,22 +1,14 @@
 <?php
 
-use App\Http\Controllers\CategoriaController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AutosController;
+use App\Http\Controllers\CategoriaController;
 
-Route::get('/', function () {
-    return view('autos/index');
-});
 
-Route::get('/crearAuto', function () {
-    return view('autos/create');
-});
+Route::get('/', [AutosController::class, 'index']);
+Route::resource('/autos', AutosController::class);
 
-Route::get('/editarAuto', function () {
-    return view('autos/edit');
-});
+Route::resource('/categorias', CategoriaController::class);
 
-// categorias
 
-Route::get('/verCategorias',CategoriaController::class . '@index');
-
-Route::delete('/categorias/{id}',CategoriaController::class . '@destroy');

@@ -13,7 +13,7 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::all();
-        return view('categorias/index', compact('categorias')); // Pasa las categorías a la vista
+        return view('categorias/index', compact('categorias')); 
     }
 
     /**
@@ -29,7 +29,16 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $categoria = new Categoria();
+            $categoria->nombre = $request->input('nombre'); 
+            $categoria->descripcion = $request->input('descripcion'); 
+            $categoria->save();
+
+            return redirect()->route('categorias.index')->with('success', 'Categoría creada exitosamente.');
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al crear la categoría: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,7 +46,12 @@ class CategoriaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $categoria = Categoria::findOrFail($id);
+            return view('categorias/edit', compact('categoria')); // Pasa la categoría a la vista de edición
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Categoría no encontrada.'], 404);
+        }
     }
 
     /**
@@ -53,7 +67,16 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $categoria = Categoria::findOrFail($id);
+            $categoria->nombre = $request->input('nombre'); 
+            $categoria->descripcion = $request->input('descripcion'); 
+            $categoria->save();
+
+            return redirect()->route('categorias.index')->with('success', 'Categoría actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al actualizar la categoría: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
