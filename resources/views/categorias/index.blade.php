@@ -120,16 +120,11 @@
                         <td>{{ $categoria->descripcion }}</td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center gap-2">
-                                {{-- Contenedor flexible para alinear y espaciar --}}
-                                {{-- Botón de Editar --}}
-                                {{-- He usado 'categorias.edit' que es la convención para mostrar el formulario de edición.
-             Si tu método 'show' retorna el formulario de edición, puedes mantener 'categorias.show'. --}}
                                 <a href="{{ route('categorias.show', $categoria->id) }}"
                                     class="btn btn-primary btn-sm d-inline-flex align-items-center">
                                     <i class="bi bi-pencil-fill me-1"></i> Editar
                                 </a>
 
-                                {{-- Botón de Eliminar --}}
                                 <form action="{{ route('categorias.destroy', $categoria->id) }}" method="POST"
                                     style="display:inline;">
                                     @csrf
