@@ -28,7 +28,7 @@
 
                     <div class="mb-3">
                         <label for="campo2" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="campo2" name="descripcion" placeholder="Digita una descripcion"></textarea>
+                        <textarea class="form-control" id="campo2" name="descripcion" placeholder="Digita una descripcion" required></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>

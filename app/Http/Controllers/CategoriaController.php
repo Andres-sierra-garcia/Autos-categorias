@@ -87,7 +87,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::findOrFail($id);
             $categoria->delete();
-            return response()->json(['success' => true, 'message' => 'Categoría eliminada exitosamente.']);
+            return redirect()->route('categorias.index')->with('success', 'Categoria eliminada exitosamente.');
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al eliminar la categoría: ' . $e->getMessage()], 500);
         }

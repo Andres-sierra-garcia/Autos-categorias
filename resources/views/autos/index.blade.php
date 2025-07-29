@@ -10,14 +10,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
-    <title>Clasificación de Autos</title>
+    <title>Registro de Autos</title>
 </head>
 
 <body>
     <header class="bg-primary text-white py-4 mb-4">
         <div class="container text-center">
             <h1 class="display-4 mb-0">
-                Categorizar Autos <i class="bi bi-car-front-fill"></i>
+                Registro de Autos <i class="bi bi-car-front-fill"></i>
             </h1>
             <p class="lead">Gestiona fácilmente tu inventario de vehículos.</p>
         </div>
@@ -32,7 +32,7 @@
                 </a>
                 <a href="{{ route('autos.create')}}"
                                 class="btn btn-primary btn-sm d-inline-flex align-items-center">
-                                <i class="bi bi-pencil-fill me-1"></i>Categorizar auto
+                                <i class="bi bi-pencil-fill me-1"></i>Registrar auto
                 </a>
             </div>
         </div>

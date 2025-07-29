@@ -24,25 +24,25 @@
 
                     <div class="mb-3">
                         <label for="campo1" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="campo1" name="nombre" value="{{ $auto->nombre }}">
+                        <input type="text" class="form-control" id="campo1" name="nombre" value="{{ $auto->nombre }}" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="campo2" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="campo2" name="descripcion">{{ $auto->descripcion }}</textarea>
+                        <textarea class="form-control" id="campo2" name="descripcion" required>{{ $auto->descripcion }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="campo3" class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="campo3" name="marca" value="{{ $auto->marca }}">
+                        <input type="text" class="form-control" id="campo3" name="marca" value="{{ $auto->marca }}" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="campo4" class="form-label">Modelo</label>
-                        <input type="text" class="form-control" id="campo4" name="modelo" value="{{ $auto->modelo }}">
+                        <input type="text" class="form-control" id="campo4" name="modelo" value="{{ $auto->modelo }}" required>
                     </div>
 
-                    <select class="form-select mb-3" name="categoria_id" id="categoria_id">
+                    <select class="form-select mb-3" name="categoria_id" id="categoria_id" required>
                         <option value="">Selecciona una categoría</option>
                         @foreach ($categorias as $categoria)
                             <option value="{{ $categoria->id }}" {{ $auto->categoria_id == $categoria->id ? 'selected' : '' }}>
