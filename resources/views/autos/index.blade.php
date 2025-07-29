@@ -30,8 +30,9 @@
                 <a href="/categorias" class="btn btn-success me-2">
                     <i class="bi bi-plus me-1"></i> Ver categorias
                 </a>
-                <a href="/crearAuto" class="btn btn-primary">
-                    <i class="bi bi-car-front-fill me-1"></i> Categorizar Auto
+                <a href="{{ route('autos.create')}}"
+                                class="btn btn-primary btn-sm d-inline-flex align-items-center">
+                                <i class="bi bi-pencil-fill me-1"></i>Categorizar auto
                 </a>
             </div>
         </div>
@@ -67,11 +68,13 @@
                                 class="btn btn-primary btn-sm d-inline-flex align-items-center">
                                 <i class="bi bi-pencil-fill me-1"></i> Editar
                             </a>
-                            <button type="button" class="btn btn-danger btn-sm d-inline-flex align-items-center"
-                                data-bs-toggle="modal" data-bs-target="#borrarCategoria"
-                                data-categoria-id="{{ $auto->id }}" data-categoria-nombre="{{ $auto->nombre }}">
-                                <i class="bi bi-trash-fill me-1"></i> Eliminar
-                            </button>
+                            <form action="{{ route('autos.destroy', $auto->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm d-inline-flex align-items-center">
+                                    <i class="bi bi-pencil-fill me-1"></i> Eliminar
+                                </button>
+                            </form>
                         </td>
         </div>
         </td>
