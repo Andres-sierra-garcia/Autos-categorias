@@ -43,14 +43,15 @@
                             <td>{{ auto.descripcion }}</td>
                             <td>{{ auto.marca }}</td>
                             <td>{{ auto.modelo }}</td>
-                         <!--    <td>{{ categorias.find(c => c.id === auto.categoria_id)?.nombre || 'Sin categoría' }}</td> -->
-                      <!--       <td class="text-center">
-                                <router-link :to="{ name: 'autos.edit', params: { id: auto.id } }" class="btn btn-warning btn-sm">
+                            <td>{{ auto.categoria_nombre || 'Sin categoria' }}</td>
+                            <td class="text-center" style="display: flex; gap: 5px; justify-content: center;">
+                                <router-link :to="`/editarAuto/${auto.id}`" class="btn btn-warning btn-sm">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </router-link>
                                 <button @click="deleteAuto(auto.id)" class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash-fill"></i> Eliminar
-                                </button> -->
+                                </button>
+                            </td>
                             
                         </tr>
                     </tbody>
@@ -75,8 +76,9 @@ export default {
     methods: {
         fetchAutos() {
             this.$axios
-                .get('/autos')
+                .get('api/autos')
                 .then(response => {
+                    console.log('Autos cargados exitosamente:', response.data);
                     this.autos = response.data;
                 })
                 .catch(error => {

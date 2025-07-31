@@ -5,10 +5,9 @@
         <form
             id="formEditarRegistro"
             @submit.prevent="registrarAuto"
-            action="/autos"
+            action="/"
             method="POST"
         >
-            @csrf
 
             <div class="mb-3">
                 <label for="campo1" class="form-label">Nombre</label>
@@ -18,7 +17,7 @@
                     id="campo1"
                     v-model="auto.nombre"
                     name="nombre"
-                    placeholder="Nombre de la categoría"
+                    placeholder="Nombre de el auto"
                     required
                 />
             </div>
@@ -66,6 +65,7 @@
                 <label for="campo5" class="form-label">Categoría</label>
                 <select
                     class="form-select"
+                    v-model="auto.categoria_id"
                     id="campo5"
                     name="categoria_id"
                     required
@@ -73,7 +73,7 @@
                     <option value="" disabled selected>
                         Selecciona una categoría
                     </option>
-                            <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+                            <option v-for="categoria in categorias"  :key="categoria.id" :value="categoria.id">
                         {{ categoria.nombre }}
                     </option>
                 </select>
@@ -84,7 +84,7 @@
             </button>
         </form>
         <div class="mt-3">
-            <a href="/categorias" class="btn btn-secondary">Cerrar</a>
+            <a href="/" class="btn btn-secondary">Cerrar</a>
         </div>
     </div>
 </template>
@@ -105,10 +105,14 @@ export default {
             categorias: [],
         };
     },
+    mounted() {
+        this.fetchCategorias();
+    },
     methods: {
         registrarAuto() {
+            console.log("Registrando auto:", this.auto);
             this.$axios
-                .post("/autos", this.auto)
+                .post("api/autos", this.auto)
                 .then((response) => {
                     console.log("Auto registrado exitosamente:", response.data);
                     this.$router.push('/');
@@ -123,16 +127,17 @@ export default {
                 });
         },
 
-        onMounted() {
+        fetchCategorias() {
             this.$axios
-                .get("/categorias")
-                .then((response) => {
+                .get('api/categorias')
+                .then(response => {
+                    console.log('Categorías cargadas exitosamente:', response.data);
                     this.categorias = response.data;
                 })
-                .catch((error) => {
-                    console.error("Error al cargar las categorías:", error);
+                .catch(error => {
+                    console.error('Error al cargar las categorías:', error);
                 });
-        },
+        }
     },
 };
 </script>

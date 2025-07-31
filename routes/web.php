@@ -9,7 +9,6 @@ Route::get('/{any?}', function () {
     return view('welcome'); 
 })->where('any', '.*'); 
 
-Route::resource('/autos', AutosController::class);
-Route::resource('/categorias', CategoriaController::class);
+
 
 

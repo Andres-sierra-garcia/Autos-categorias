@@ -44,7 +44,36 @@
                 categorias: []
             };
         },
+        mounted() {
+            this.fetchCategorias();
+            this.fetchAuto();
+        }
+        ,
         methods: {
+            fetchCategorias() {
+                this.$axios
+                    .get('api/categorias')
+                    .then(response => {
+                        this.categorias = response.data;
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar las categorías:', error);
+                    });
+            },
+            fetchAuto() {
+                const autoId = this.$route.params.id;
+                console.log('Cargando auto con ID:', autoId);
+                this.$axios
+                    .get(`api/autos/${autoId}`)
+                    .then(response => {
+                        this.auto = response.data;
+                        console.log('Auto cargado exitosamente:', this.auto);
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar el auto:', error);
+                    });
+            },
+        
             editarAuto() {
                 this.$axios
                     .put(`/autos/${this.auto.id}`, this.auto)
@@ -56,9 +85,7 @@
                     });
             }
         },
-        mounted() {
-            // Aquí puedes realizar acciones adicionales al montar el componente si es necesario
-        }
+        
     };
 
 </script>
