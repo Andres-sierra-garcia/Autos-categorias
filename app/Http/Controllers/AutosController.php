@@ -107,7 +107,7 @@ class AutosController extends Controller
             $auto = Auto::findOrFail($id);
             $auto->delete();
             // Redirige con un mensaje de éxito
-            return redirect()->route('autos.index')->with('success', 'Auto eliminado exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Auto eliminado exitosamente.'], 200);
         } catch (\Exception $e) {
             // Redirige con un mensaje de error
             return redirect()->route('autos.index')->with('error', 'Error al eliminar el auto: ' . $e->getMessage());

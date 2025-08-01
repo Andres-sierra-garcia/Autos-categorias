@@ -71,12 +71,11 @@ export default {
     },
     mounted() {
         this.fetchAutos();
-        this.fetchCategorias();
     },
     methods: {
         fetchAutos() {
             this.$axios
-                .get('api/autos')
+                .get('/api/autos')
                 .then(response => {
                     console.log('Autos cargados exitosamente:', response.data);
                     this.autos = response.data;
@@ -85,20 +84,10 @@ export default {
                     console.error('Error al cargar los autos:', error);
                 });
         },
-        fetchCategorias() {
-            this.$axios
-                .get('/categorias')
-                .then(response => {
-                    this.categorias = response.data;
-                })
-                .catch(error => {
-                    console.error('Error al cargar las categorías:', error);
-                });
-        },
         deleteAuto(id) {
             if (confirm('¿Estás seguro de que deseas eliminar este auto?')) {
                 this.$axios
-                    .delete(`/autos/${id}`)
+                    .delete(`/api/autos/${id}`)
                     .then(response => {
                         console.log('Auto eliminado exitosamente:', response.data);
                         this.fetchAutos();

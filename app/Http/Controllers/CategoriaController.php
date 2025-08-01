@@ -35,7 +35,7 @@ class CategoriaController extends Controller
             $categoria->descripcion = $request->input('descripcion'); 
             $categoria->save();
 
-            return redirect()->route('categorias.index')->with('success', 'Categoría creada exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Categoría creada exitosamente.'], 201);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al crear la categoría: ' . $e->getMessage()], 500);
         }
@@ -48,7 +48,7 @@ class CategoriaController extends Controller
     {
         try {
             $categoria = Categoria::findOrFail($id);
-            return view('categorias/edit', compact('categoria')); // Pasa la categoría a la vista de edición
+            return response()->json($categoria);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Categoría no encontrada.'], 404);
         }
@@ -73,7 +73,7 @@ class CategoriaController extends Controller
             $categoria->descripcion = $request->input('descripcion'); 
             $categoria->save();
 
-            return redirect()->route('categorias.index')->with('success', 'Categoría actualizada exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Categoría actualizada exitosamente.'], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al actualizar la categoría: ' . $e->getMessage()], 500);
         }
@@ -87,7 +87,7 @@ class CategoriaController extends Controller
         try {
             $categoria = Categoria::findOrFail($id);
             $categoria->delete();
-            return redirect()->route('categorias.index')->with('success', 'Categoria eliminada exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Categoría eliminada exitosamente.'], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al eliminar la categoría: ' . $e->getMessage()], 500);
         }
