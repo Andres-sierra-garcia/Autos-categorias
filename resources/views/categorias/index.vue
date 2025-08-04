@@ -96,8 +96,7 @@ export default {
                 });
         },
         deleteCategoria(id) {
-            if (confirm("¿Estás seguro de que deseas eliminar esta categoría?")) {
-                this.$axios
+            this.$axios
                     .delete(`/api/categorias/${id}`)
                     .then((response) => {
                         console.log("Categoría eliminada exitosamente:", response.data);
@@ -106,7 +105,6 @@ export default {
                     .catch((error) => {
                         console.error("Error al eliminar la categoría:", error);
                     });
-            }
         },
     },
 };

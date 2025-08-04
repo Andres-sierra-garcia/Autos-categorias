@@ -98,7 +98,7 @@ export default {
             } else {
                 this.$emit('close-modal'); // Emite evento para cerrar el modal
             }
-          }, 1500); // 1.5 segundos para ver el mensaje
+          }, 1500); 
         })
         .catch(error => {
           console.error('Error al crear la categoría:', error);
