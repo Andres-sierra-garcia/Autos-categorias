@@ -48,7 +48,7 @@
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </form>
         <div class="mt-3">
-            <a href="/categorias" class="btn btn-secondary">Cerrar</a>
+            <a href="/" class="btn btn-secondary">Cerrar</a>
         </div>
     </div>
 </body>
