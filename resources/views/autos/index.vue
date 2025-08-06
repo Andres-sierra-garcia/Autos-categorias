@@ -66,7 +66,6 @@ export default {
     data() {
         return {
             autos: [],
-            categorias: []
         };
     },
     mounted() {
