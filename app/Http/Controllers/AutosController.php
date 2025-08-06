@@ -26,7 +26,7 @@ class AutosController extends Controller
                 'categorias.nombre AS categoria_nombre'
             )
             ->get();
-        return view('autos/index', compact('autos'));
+        return response()->json($autos);
     }
 
     /**
@@ -34,12 +34,7 @@ class AutosController extends Controller
      */
     public function create()
     {
-        try {
-            $categorias = Categoria::all();
-            return view('autos.create', compact('categorias'));
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error al cargar las categorías: ' . $e->getMessage()], 500);
-        }
+        
     }
 
     /**
@@ -56,7 +51,7 @@ class AutosController extends Controller
             $auto->categoria_id = $request->input('categoria_id');
             $auto->save();
 
-            return redirect()->route('autos.index')->with('success', 'Auto creado exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Auto creado exitosamente.'], 201);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al crear el auto: ' . $e->getMessage()], 500);
         }
@@ -69,8 +64,7 @@ class AutosController extends Controller
     {
         try {
             $auto = Auto::findOrFail($id);
-            $categorias = Categoria::all();
-            return view('autos/edit', compact('auto', 'categorias'));
+            return response()->json($auto);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Auto no encontrado.'], 404);
         }
@@ -98,7 +92,7 @@ class AutosController extends Controller
             $auto->categoria_id = $request->input('categoria_id');
             $auto->save();
 
-            return redirect()->route('autos.index')->with('success', 'Auto actualizado exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Auto actualizado exitosamente.'], 200);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error al actualizar el auto: ' . $e->getMessage()], 500);
         }
@@ -113,7 +107,7 @@ class AutosController extends Controller
             $auto = Auto::findOrFail($id);
             $auto->delete();
             // Redirige con un mensaje de éxito
-            return redirect()->route('autos.index')->with('success', 'Auto eliminado exitosamente.');
+            return response()->json(['success' => true, 'message' => 'Auto eliminado exitosamente.'], 200);
         } catch (\Exception $e) {
             // Redirige con un mensaje de error
             return redirect()->route('autos.index')->with('error', 'Error al eliminar el auto: ' . $e->getMessage());
