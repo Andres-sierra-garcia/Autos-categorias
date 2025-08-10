@@ -43,14 +43,15 @@
                             <td>{{ auto.descripcion }}</td>
                             <td>{{ auto.marca }}</td>
                             <td>{{ auto.modelo }}</td>
-                         <!--    <td>{{ categorias.find(c => c.id === auto.categoria_id)?.nombre || 'Sin categoría' }}</td> -->
-                      <!--       <td class="text-center">
-                                <router-link :to="{ name: 'autos.edit', params: { id: auto.id } }" class="btn btn-warning btn-sm">
+                            <td>{{ auto.categoria_nombre || 'Sin categoria' }}</td>
+                            <td class="text-center" style="display: flex; gap: 5px; justify-content: center;">
+                                <router-link :to="`/editarAuto/${auto.id}`" class="btn btn-warning btn-sm">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </router-link>
                                 <button @click="deleteAuto(auto.id)" class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash-fill"></i> Eliminar
-                                </button> -->
+                                </button>
+                            </td>
                             
                         </tr>
                     </tbody>
@@ -65,38 +66,27 @@ export default {
     data() {
         return {
             autos: [],
-            categorias: []
         };
     },
     mounted() {
         this.fetchAutos();
-        this.fetchCategorias();
     },
     methods: {
         fetchAutos() {
             this.$axios
-                .get('/autos')
+                .get('/api/autos')
                 .then(response => {
+                    console.log('Autos cargados exitosamente:', response.data);
                     this.autos = response.data;
                 })
                 .catch(error => {
                     console.error('Error al cargar los autos:', error);
                 });
         },
-        fetchCategorias() {
-            this.$axios
-                .get('/categorias')
-                .then(response => {
-                    this.categorias = response.data;
-                })
-                .catch(error => {
-                    console.error('Error al cargar las categorías:', error);
-                });
-        },
         deleteAuto(id) {
             if (confirm('¿Estás seguro de que deseas eliminar este auto?')) {
                 this.$axios
-                    .delete(`/autos/${id}`)
+                    .delete(`/api/autos/${id}`)
                     .then(response => {
                         console.log('Auto eliminado exitosamente:', response.data);
                         this.fetchAutos();

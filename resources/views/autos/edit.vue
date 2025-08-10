@@ -20,13 +20,14 @@
             <input type="text" class="form-control" id="campo4" name="modelo" v-model="auto.modelo" required>
         </div>
 
-        <select class="form-select mb-3" name="categoria_id" id="categoria_id" required>
+        <select v-model="auto.categoria_id" class="form-select mb-3" name="categoria_id" id="categoria_id" required>
             <option value="">Selecciona una categoría</option>
             <option v-for="categoria in categorias" :value="categoria.id" :key="categoria.id">
                 {{ categoria.nombre }}
             </option>
         </select>
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <router-link to="/" class="btn btn-secondary">Cancelar</router-link>
     </form>
 </template>
 <script>
@@ -44,21 +45,50 @@
                 categorias: []
             };
         },
+        mounted() {
+            this.fetchAuto();
+            this.fetchCategorias();
+        }
+        ,
         methods: {
+            fetchCategorias() {
+            this.$axios
+                .get('/api/categorias')
+                .then(response => {
+                    this.categorias = response.data;
+                    console.log('Categorías cargadas exitosamente:', this.categorias);
+                })
+                .catch(error => {
+                    console.error('Error al cargar las categorías:', error);
+                });
+        },
+            fetchAuto() {
+                const autoId = this.$route.params.id;
+                console.log('Cargando auto con ID:', autoId);
+                this.$axios
+                    .get(`/api/autos/${autoId}`)
+                    .then(response => {
+                        this.auto = response.data;
+                        console.log('Auto cargado exitosamente:', response);
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar el auto:', error);
+                    });
+            },
+        
             editarAuto() {
                 this.$axios
-                    .put(`/autos/${this.auto.id}`, this.auto)
+                    .put(`/api/autos/${this.auto.id}`, this.auto)
                     .then(response => {
-                        this.$router.push('/autos');
+                        this.$router.push('/');
+                        console.log('Auto editado exitosamente:', response.data);
                     })
                     .catch(error => {
                         console.error('Error al editar el auto:', error);
                     });
             }
         },
-        mounted() {
-            // Aquí puedes realizar acciones adicionales al montar el componente si es necesario
-        }
+        
     };
 
 </script>
