@@ -16,8 +16,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        parent::boot();
+        Route::prefix('autos')
+        ->name('autos.')
+        ->middleware(['web', 'auth'])
+        ->namespace($this->moduleNamespace())
+        ->group(__DIR__ . '/../routes/web.php');
     }
+
+
 
     /**
      * Define the routes for the application.
