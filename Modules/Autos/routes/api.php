@@ -1,8 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-use Modules\Autos\Http\Controllers\AutosController;
+use App\Http\Controllers\AutosController;
+use App\Http\Controllers\CategoriaController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('autos', AutosController::class)->names('autos');
-});
+Route::resource('/autos', AutosController::class);
+Route::resource('/categorias', CategoriaController::class);
