@@ -1,7 +1,6 @@
 <?php
 
 use Nwidart\Modules\Activators\FileActivator;
-use Nwidart\Modules\Providers\ConsoleServiceProvider;
 
 return [
 
@@ -225,10 +224,7 @@ return [
     | application. You can add your own commands to merge section.
     |
     */
-    'commands' => ConsoleServiceProvider::defaultCommands()
-        ->merge([
-            // New commands go here
-        ])->toArray(),
+    'commands' => [],
 
     /*
     |--------------------------------------------------------------------------
