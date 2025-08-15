@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Autos\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Auto;
 use Illuminate\Support\Facades\DB;
-use App\Models\Categoria;
 
 class AutosController extends Controller
 {
