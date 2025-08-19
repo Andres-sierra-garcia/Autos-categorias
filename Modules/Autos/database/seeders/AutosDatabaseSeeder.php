@@ -1,0 +1,16 @@
+<?php
+
+namespace Modules\Autos\Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class AutosDatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        // $this->call([]);
+    }
+}

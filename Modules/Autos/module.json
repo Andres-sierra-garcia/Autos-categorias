@@ -1,0 +1,11 @@
+{
+    "name": "Autos",
+    "alias": "autos",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Autos\\Providers\\AutosServiceProvider"
+    ],
+    "files": []
+}
