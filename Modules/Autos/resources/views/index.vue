@@ -1,4 +1,4 @@
-3<template>
+<template>
     <div>
         <header class="bg-primary text-white py-4 mb-4">
             <div class="container text-center">
@@ -16,7 +16,7 @@
                 <a href="/categorias" class="btn btn-success me-2">
                     <i class="bi bi-plus me-1"></i> Ver categorias
                 </a>
-                <a href="/registrarAuto" class="btn btn-primary btn-sm d-inline-flex align-items-center">
+                <a href="/AutoCreate" class="btn btn-primary btn-sm d-inline-flex align-items-center">
                     <i class="bi bi-pencil-fill me-1"></i>Registrar auto
                 </a>
             </div>
@@ -45,7 +45,7 @@
                             <td>{{ auto.modelo }}</td>
                             <td>{{ auto.categoria_nombre || 'Sin categoria' }}</td>
                             <td class="text-center" style="display: flex; gap: 5px; justify-content: center;">
-                                <router-link :to="`/editarAuto/${auto.id}`" class="btn btn-warning btn-sm">
+                                <router-link :to="`/AutoEdit/${auto.id}`" class="btn btn-warning btn-sm">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </router-link>
                                 <button @click="deleteAuto(auto.id)" class="btn btn-danger btn-sm">

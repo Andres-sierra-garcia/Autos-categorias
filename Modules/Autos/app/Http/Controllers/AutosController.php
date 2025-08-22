@@ -1,9 +1,12 @@
 <?php
 
-namespace Modules\Autos\Http\Controllers;
+namespace Modules\Autos\App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\Autos\App\Models\Auto;
+/* use App\Modules\Categorias\app\Models\Categoria; */
 
 class AutosController extends Controller
 {
@@ -12,7 +15,19 @@ class AutosController extends Controller
      */
     public function index()
     {
-        return view('autos::index');
+        $autos = DB::table('autos')
+            ->join('categorias', 'autos.categoria_id', '=', 'categorias.id')
+            ->select(
+                'autos.id',
+                'autos.nombre',
+                'autos.descripcion',
+                'autos.marca',
+                'autos.modelo',
+                'autos.categoria_id',
+                'categorias.nombre AS categoria_nombre'
+            )
+            ->get();
+        return response()->json($autos);
     }
 
     /**
@@ -20,37 +35,83 @@ class AutosController extends Controller
      */
     public function create()
     {
-        return view('autos::create');
+        
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        try {
+            $auto = new Auto();
+            $auto->nombre = $request->input('nombre');
+            $auto->descripcion = $request->input('descripcion');
+            $auto->marca = $request->input('marca');
+            $auto->modelo = $request->input('modelo');
+            $auto->categoria_id = $request->input('categoria_id');
+            $auto->save();
+
+            return response()->json(['success' => true, 'message' => 'Auto creado exitosamente.'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al crear el auto: ' . $e->getMessage()], 500);
+        }
+    }
 
     /**
-     * Show the specified resource.
+     * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        return view('autos::show');
+        try {
+            $auto = Auto::findOrFail($id);
+            return response()->json($auto);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Auto no encontrado.'], 404);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(string $id)
     {
-        return view('autos::edit');
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, string $id)
+    {
+        try {
+            $auto = Auto::findOrFail($id);
+            $auto->nombre = $request->input('nombre');
+            $auto->descripcion = $request->input('descripcion');
+            $auto->marca = $request->input('marca');
+            $auto->modelo = $request->input('modelo');
+            $auto->categoria_id = $request->input('categoria_id');
+            $auto->save();
+
+            return response()->json(['success' => true, 'message' => 'Auto actualizado exitosamente.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al actualizar el auto: ' . $e->getMessage()], 500);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy(string $id)
+    {
+        try {
+            $auto = Auto::findOrFail($id);
+            $auto->delete();
+            // Redirige con un mensaje de éxito
+            return response()->json(['success' => true, 'message' => 'Auto eliminado exitosamente.'], 200);
+        } catch (\Exception $e) {
+            // Redirige con un mensaje de error
+            return redirect()->route('autos.index')->with('error', 'Error al eliminar el auto: ' . $e->getMessage());
+        }
+    }
 }

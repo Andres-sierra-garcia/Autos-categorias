@@ -1,5 +1,7 @@
 {
     "Categorias": true,
     "Autos": true,
-    "Usuarios": true
+    "Usuarios": true,
+    "Ventas": true,
+    "Prueba": true
 }

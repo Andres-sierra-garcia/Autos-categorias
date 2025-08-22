@@ -1,23 +1,29 @@
 import './bootstrap'; 
-
-import 'bootstrap';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import routes from './routes';
+
+import autosModuleRoutes from '../../Modules/Autos/js/route.js';
+import categoriasModuleRoutes from '../../Modules/Categorias/js/route.js';
+
 Vue.prototype.$axios = window.axios; 
-
-
 Vue.use(VueRouter);
 
+
+const routes = [
+    ...autosModuleRoutes.options.routes,
+    ...categoriasModuleRoutes.options.routes
+]
+
 const router = new VueRouter({
-    mode: 'history', 
-    routes            
-});
+    mode: 'history',
+    routes
+})
 
 const app = new Vue({
-    el: '#app', 
     router,      
-});
+}).$mount('#app');
+
+
 
 
 
